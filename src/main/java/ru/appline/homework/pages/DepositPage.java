@@ -4,6 +4,8 @@ import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import static ru.appline.homework.utils.Parser.parseToInt;
@@ -29,7 +31,7 @@ public class DepositPage extends BasePage {
     WebElement monthlyCapitalization;
 
     @FindBy(xpath = "//span[@class='js-calc-earned']")
-    WebElement accrual;
+    WebElement earned;
 
     @FindBy(xpath = "//span[@class='js-calc-replenish']")
     WebElement replenish;
@@ -112,7 +114,7 @@ public class DepositPage extends BasePage {
     public DepositPage checkDepositResult(String text, String value) {
         switch (text.toLowerCase()) {
             case ("начислено"):
-                checkField(accrual, value, text);
+                checkField(earned, value, text);
                 break;
             case ("пополнение"):
                 checkField(replenish, value, text);
@@ -157,5 +159,26 @@ public class DepositPage extends BasePage {
         }
     }
 
+    private void chooseOptionBase(WebElement element, boolean flag) {
+        String falseBox = "./../..//div[@class='jq-checkbox calculator__check']";
+        String trueBox = "./../..//div[@class='jq-checkbox calculator__check checked']";
+        String tmp = result.getText();
 
-}
+        if (isElementExist(element, trueBox)) {
+            if (!flag) {
+                element.click();
+                actions.moveToElement(result).build().perform();
+                wait.until((ExpectedCondition<Boolean>) driver -> !result.getText().equals(tmp));
+            }
+        }
+
+        if (isElementExist(element, falseBox)) {
+            if (flag) {
+                element.click();
+                actions.moveToElement(result).click().build().perform();
+                wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(result, tmp)));
+            }
+        }
+    }
+    }
+

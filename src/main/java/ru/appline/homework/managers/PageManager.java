@@ -4,8 +4,6 @@ package ru.appline.homework.managers;
 import ru.appline.homework.pages.DepositPage;
 import ru.appline.homework.pages.StartPage;
 
-import javax.smartcardio.Card;
-
 
 public class PageManager {
 

@@ -11,16 +11,16 @@ public class FirstTest extends BaseTest {
     @DisplayName("Проверка страницы Вклады")
     @ParameterizedTest
     @CsvFileSource(resources = "/firstTestData.csv")
-    public void test(String a, String b, String c){
+    public void test(String a, String b, String c, String d, boolean e, String f, String g, String h){
         app.getStartPage()
                 .chooseDeposit()
                 .chooseCurrency(a)
                 .fillField("сумма вклада", b)
                 .fillField("срок", c)
-                .fillField("ежемесячное пополнение", "50000")
-                .chooseOption("Ежемесячная капитализация", true)
-                .checkDepositResult("начислено", "9 062,40")
-                .checkDepositResult("пополнение", "250 000")
-                .checkDepositResult("к снятию", "559 062,40");
+                .fillField("ежемесячное пополнение", d)
+                .chooseOption("Ежемесячная капитализация", e)
+                .checkDepositResult("пополнение", g)
+                .checkDepositResult("начислено", f)
+                .checkDepositResult("к снятию", h);
     }
 }

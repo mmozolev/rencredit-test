@@ -55,18 +55,11 @@ public class BasePage {
     }
 
     protected void fillFieldBase(WebElement element,String value) {
+        String tmp = element.getAttribute("value");
         scrollToElement(element);
         actions.moveToElement(element).click().doubleClick().build().perform();
         element.sendKeys(value);
-    }
-
-    protected void chooseOptionBase(WebElement element, boolean flag) {
-        String falseBox = "./../..//div[@class='jq-checkbox calculator__check']";
-        String trueBox = "./../..//div[@class='jq-checkbox calculator__check checked']";
-
-        if (isElementExist(element, trueBox) != flag) {
-            element.findElement(By.xpath(falseBox)).click();
-        }
+        wait.until(ExpectedConditions.attributeContains(element, "value", value));
     }
 
     public boolean isElementExist(WebElement element, String xpath) {

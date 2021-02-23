@@ -7,6 +7,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.appline.homework.managers.DriverManager;
@@ -55,11 +56,12 @@ public class BasePage {
     }
 
     protected void fillFieldBase(WebElement element,String value) {
-        String tmp = element.getAttribute("value");
+//        String tmp = element.getAttribute("value");
         scrollToElement(element);
-        actions.moveToElement(element).click().doubleClick().build().perform();
+        js.executeScript("arguments[0].value='';", element);
         element.sendKeys(value);
         wait.until(ExpectedConditions.attributeContains(element, "value", value));
+
     }
 
     public boolean isElementExist(WebElement element, String xpath) {
@@ -76,6 +78,7 @@ public class BasePage {
     }
 
     protected void checkField(WebElement element, String value, String text) {
+        Assertions.assertTrue(wait.until(ExpectedConditions.textToBePresentInElement(element, value)));
         Assertions.assertEquals(element.getText(), value,
                 "Значение поля " + text + " не равно " + value);
     }

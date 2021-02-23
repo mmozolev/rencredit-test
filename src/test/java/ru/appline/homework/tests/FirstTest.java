@@ -19,8 +19,8 @@ public class FirstTest extends BaseTest {
                 .fillField("срок", c)
                 .fillField("ежемесячное пополнение", d)
                 .chooseOption("Ежемесячная капитализация", e)
-                .checkDepositResult("пополнение", g)
                 .checkDepositResult("начислено", f)
-                .checkDepositResult("к снятию", h);
+                .checkDepositResult("к снятию", h)
+                .checkDepositResult("пополнение", g);
     }
 }

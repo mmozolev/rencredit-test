@@ -1,6 +1,5 @@
 package ru.appline.homework.managers;
 
-//import ru.appline.homework.pages.CardsPage;
 import ru.appline.homework.pages.DepositPage;
 import ru.appline.homework.pages.StartPage;
 
@@ -13,7 +12,6 @@ public class PageManager {
 
     private static DepositPage depositPage;
 
-//    private static CardsPage cardsPage;
 
     public static PageManager getPageManager() {
         if (pageManager == null) {
@@ -36,10 +34,4 @@ public class PageManager {
         return depositPage;
     }
 
-//    public CardsPage getCardsPage() {
-//        if (cardsPage == null) {
-//            cardsPage = new CardsPage();
-//        }
-//        return cardsPage;
-//    }
 }

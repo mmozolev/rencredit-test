@@ -2,11 +2,14 @@ package ru.appline.homework.pages;
 
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+
+import javax.swing.tree.ExpandVetoException;
 
 import static ru.appline.homework.utils.Parser.parseToInt;
 
@@ -45,7 +48,7 @@ public class DepositPage extends BasePage {
      * @param text - название валюты (рубли/доллары)
      * @return остаемся на данной странице
      */
-    @Step("Выбрать ${text}, как валюту вклада ")
+    @Step("Выбрать {text}, как валюту вклада ")
     public DepositPage chooseCurrency(String text) {
         switch (text.toLowerCase()) {
             case ("рубли"):
@@ -69,17 +72,21 @@ public class DepositPage extends BasePage {
      * @param value - значение поля
      * @return Остаемся на данной странице
      */
-    @Step("Заполнить поле ${text} значением ${value}")
+    @Step("Заполнить поле {text} значением {value}")
     public DepositPage fillField(String text, String value) {
+        String tmp = result.getText();
         switch (text.toLowerCase()) {
             case ("сумма вклада"):
                 fillFieldBase(amount, value);
+                waitChanging(tmp);
                 break;
             case ("ежемесячное пополнение"):
                 fillFieldBase(monthlyReplenish, value);
+                waitChanging(tmp);
                 break;
             case ("срок"):
                 chooseDropDown(value);
+                waitChanging(tmp);
                 break;
             default:
                 Assertions.fail("Поле с именем " + text + " отсутствует на странцие");
@@ -94,7 +101,7 @@ public class DepositPage extends BasePage {
      * @param flag - значение чекбокса (true - включить опцию, false - отключить опцию)
      * @return Остаемся на данной странице
      */
-    @Step("Выбрать опцию ${text}")
+    @Step("Выбрать опцию {text}")
     public DepositPage chooseOption(String text, boolean flag) {
         switch (text.toLowerCase()) {
             case ("ежемесячная капитализация"):
@@ -110,7 +117,7 @@ public class DepositPage extends BasePage {
      * @param value - значение поля
      * @return Остаемся на данной странице
      */
-    @Step("Проверить, что значение поля ${text} равно ${value}")
+    @Step("Проверить, что значение поля {text} равно {value}")
     public DepositPage checkDepositResult(String text, String value) {
         switch (text.toLowerCase()) {
             case ("начислено"):
@@ -160,25 +167,24 @@ public class DepositPage extends BasePage {
     }
 
     private void chooseOptionBase(WebElement element, boolean flag) {
-        String falseBox = "./../..//div[@class='jq-checkbox calculator__check']";
-        String trueBox = "./../..//div[@class='jq-checkbox calculator__check checked']";
-        String tmp = result.getText();
 
-        if (isElementExist(element, trueBox)) {
+        if (element.findElement(By.xpath("./../..//input")).isSelected()) {
             if (!flag) {
                 element.click();
-                actions.moveToElement(result).build().perform();
-                wait.until((ExpectedCondition<Boolean>) driver -> !result.getText().equals(tmp));
+                wait.until((ExpectedCondition<Boolean>) driver -> !element.findElement(By.xpath("./../..//input")).isSelected());
             }
         }
 
-        if (isElementExist(element, falseBox)) {
+        if (!element.findElement(By.xpath("./../..//input")).isSelected()) {
             if (flag) {
                 element.click();
-                actions.moveToElement(result).click().build().perform();
-                wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(result, tmp)));
+                wait.until((ExpectedCondition<Boolean>) driver -> element.findElement(By.xpath("./../..//input")).isSelected());
             }
         }
     }
+
+    private void waitChanging(String text) {
+        Assertions.assertTrue(wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(result, text))));
     }
+}
 

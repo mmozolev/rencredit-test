@@ -10,9 +10,6 @@ public class StartPage extends BasePage {
     @FindBy(xpath = "//div[text()='Вклады']")
     WebElement deposit;
 
-    @FindBy(xpath = "//div[text()='Карты']")
-    WebElement cards;
-
     /**
      * Метод перехода на страницу Вклады
      *

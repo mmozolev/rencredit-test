@@ -6,7 +6,4 @@ public class Parser {
         return Integer.parseInt(text.replaceAll("[^\\d]", ""));
     }
 
-//    public static String deleteSpace(String text) {
-//        return text.replaceAll(" ", "");
-//    }
 }

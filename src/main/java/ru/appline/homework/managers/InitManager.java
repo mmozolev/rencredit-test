@@ -17,6 +17,5 @@ public class InitManager {
 
     public static void quitFramework() {
         driverManager.quitWebDriver();
-        //PageManager.disablePM();
     }
 }

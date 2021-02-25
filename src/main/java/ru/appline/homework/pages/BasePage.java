@@ -56,7 +56,6 @@ public class BasePage {
     }
 
     protected void fillFieldBase(WebElement element,String value) {
-//        String tmp = element.getAttribute("value");
         scrollToElement(element);
         js.executeScript("arguments[0].value='';", element);
         element.sendKeys(value);
